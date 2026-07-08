@@ -48,15 +48,13 @@ orderEmitter.emit("orderCancelled",{name: "Gee", id: 3, email: "gideon@google.co
 
 /*//Task 2 — Streams:
 
-const fs = require("fs/promises")
+const fs = require("fs")
+const fsp = require("fs/promises")
 const path = require("path")
 
 const filePath = path.join(__dirname, "source.txt")
 const destination = path.join(__dirname, "destination.txt")
 
-
-const sourceRead = fs.readFile(filePath, "utf8")
-console.log(sourceRead)
 
 const readStream = fs.createReadStream(filePath, "utf8")
 readStream.on("data", (chunk) => {
@@ -77,12 +75,17 @@ const writeStream = fs.createWriteStream(destination, "utf8")
 
 readStream.pipe(writeStream)
 
-writeStream.on("finish", () => {
-    console.log("File copied successfully using streams!")
-})
+writeStream.on("finish", async () => {
+    console.log("File copied successfully")
+    
+    try {
+        const content = await fsp.readFile(destination, "utf8")
+        console.log("Destination file contents:", content)
+    } catch (err) {
+        console.error("Error reading destination:", err.message)
+    }
 
-const newRead = fs.readFile(destination, "utf8")
-console.log(newRead)
+})
 */
 
 /*//Task 3 — Error Handling:
@@ -102,8 +105,8 @@ class NotFoundError extends webError {
 }
 
 class ValidationError extends webError {
-    constructor (message) {
-        super(`Email/Pass not correct`, 400)
+    constructor (message = "Validation failed") {
+        super(`${message}`, 400)
         this.name = "ValidationError"
     }
 }
