@@ -1,1 +1,18 @@
 node_modules/
+
+# Environment files — contain secrets, never commit
+.env
+.env.local
+.env.production
+
+# OS files
+.DS_Store        # Mac
+Thumbs.db        # Windows
+
+# Logs
+*.log
+logs/
+
+# Build output
+dist/
+build/
